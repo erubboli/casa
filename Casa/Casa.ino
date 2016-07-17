@@ -4,7 +4,7 @@ const int buttonPin = 6;
 const int ringPin =  12; 
 const int ledPin = 13;
 
-const int ringLenght = 1000;
+const int ringLenght = 800; //milliseconds
 
 int buttonState = 0;
 int ringAllowed = 1;
@@ -14,6 +14,7 @@ void setup() {
   pinMode(ledPin, OUTPUT);
   pinMode(ringPin, OUTPUT);
   pinMode(buttonPin, INPUT);
+  
   Bridge.begin();
   Serial.begin(9600);
 }
@@ -42,16 +43,16 @@ void loop() {
 }
 
 void notify(){
-  Process p;
+  Process p; // send message to the queue on the Linux Side
   p.runShellCommandAsynchronously("/usr/bin/notify_ring.py");
 }
 
 void ring(){
-  countTicks = 0;
-  ringAllowed = 0;
   digitalWrite(ledPin, HIGH);
   digitalWrite(ringPin, HIGH);
   delay(ringLenght);
   digitalWrite(ledPin, LOW);
   digitalWrite(ringPin, LOW);
+  countTicks = 0;
+  ringAllowed = 0;
 }
